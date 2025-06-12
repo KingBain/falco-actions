@@ -111,6 +111,19 @@ runs:
 
       echo "✅ BPF ring buffer supported"
 
+  - name: Check for BTF tracepoint support
+    if: ${{ inputs.mode == 'analyze' }}
+    shell: bash
+    run: |
+      echo "🔍 Probing host eBPF tracing support (BTF)"
+      if ! sudo bpftool feature probe kernel \
+          | grep -q "program_type tracing is available"; then
+        echo "❌ eBPF tracing programs NOT supported on this runner"
+        exit 1
+      fi
+
+      echo "✅ BTF tracing support available"
+
 
 
   - name: Start Sysdig capture
