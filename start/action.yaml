@@ -62,7 +62,7 @@ runs:
     if: ${{ inputs.mode == 'analyze' }}
     shell: bash
     run: |
-      echo "🔍 Probing host eBPF tracing support (BTF)"
+      echo "Probing host eBPF tracing support (BTF)"
       if ! sudo bpftool feature probe kernel \
         | grep -q "program_type tracing is available"; then
         echo "eBPF tracing programs NOT supported on this runner"
