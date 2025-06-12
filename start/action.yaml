@@ -164,16 +164,25 @@ runs:
         echo $IGNORE_SYSCALLS_FILTER
       fi
 
-      echo "Creating Sysdig container"
-      docker run --rm -d --name sysdig --privileged \
+      echo "Starting Sysdig capture with modern BPF"
+      docker run --rm -d \
+        --name sysdig \
+        --privileged \
+        --entrypoint /usr/bin/sysdig \
         -v /var/run/docker.sock:/host/var/run/docker.sock \
-        -v /dev:/host/dev -v /proc:/host/proc:ro \
-        -v /boot:/host/boot:ro \
-        -v /lib/modules:/host/lib/modules:ro \
-        -v /usr:/host/usr:ro \
+        -v /dev:/host/dev \
+        -v /proc:/host/proc:ro \
+        -v /sys/fs/bpf:/sys/fs/bpf:ro \
+        -v /sys/kernel/btf:/sys/kernel/btf:ro \
         -v /tmp:/tmp \
-        --net=host sysdig/sysdig:latest sysdig --modern-bpf -w /tmp/capture.scap --snaplen=256 "not evt.type in (switch) $IGNORE_SYSCALLS_FILTER"
-      echo "Sysdig started"
+        --net=host \
+        sysdig/sysdig:latest \
+        --modern-bpf \
+        -w /tmp/capture.scap \
+        --snaplen=256 \
+        "not evt.type in (switch) $IGNORE_SYSCALLS_FILTER"
+
+      echo "Sysdig started in modern-bpf mode"
 
       # Ensure Sysdig container is running
       sleep 10 # todo(loresuso): replace with a more robust check
