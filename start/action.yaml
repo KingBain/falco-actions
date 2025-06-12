@@ -91,6 +91,18 @@ runs:
 
       docker logs falco
   
+  - name: Check for system scap module
+    if: ${{ inputs.mode == 'analyze' }}
+    shell: bash
+    run: |
+      echo "Checking for a host scap module"
+      # See if the scap module is already loaded on the runner
+      if lsmod | grep -qw scap; then
+        echo "scap kernel module is already loaded on the host"
+      else
+        echo "scap kernel module not found on the host"
+      fi
+
   - name: Start Sysdig capture
     if: ${{ inputs.mode == 'analyze' }}
     env:
