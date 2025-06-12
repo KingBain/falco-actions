@@ -91,18 +91,6 @@ runs:
 
       docker logs falco
   
-  - name: Verify Falco eBPF Probe Connected
-    shell: bash
-    run: |
-      echo "Driver status (inside Falco container):"
-      docker exec falco falco-driver-loader status || true
-
-      echo "Listing BPF maps/programs inside Falco container:"
-      docker exec falco bpftool map list | grep -i falco || echo "No Falco maps found"
-      docker exec falco bpftool prog list | grep -i falco || echo "No Falco progs found"
-      
-
-
   - name: Start Sysdig capture
     if: ${{ inputs.mode == 'analyze' }}
     env:
@@ -171,4 +159,21 @@ runs:
       if [[ "$VERBOSE" == "true" ]]; then
         docker ps -a
         docker logs sysdig
+      fi
+
+  - name: Verify Sysdig eBPF Probe Connected
+    shell: bash
+    run: |
+      echo "Driver status (inside Falco container):"
+      docker exec sysdig falco-driver-loader status || true
+
+      echo "Listing BPF maps/programs inside Falco container:"
+
+
+      echo "Listing BPF maps/programs inside sysdig container:"
+      if docker exec sysdig bpftool prog show | grep -i sysdig; then
+        echo "Found sysdig eBPF program"
+      else
+        echo "No sysdig eBPF program found"
+        exit 1
       fi
