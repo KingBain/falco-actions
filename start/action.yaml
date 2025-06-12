@@ -103,7 +103,7 @@ runs:
       fi
 
       # probe the kernel, then look for the ringbuf map type
-      if ! bpftool feature probe kernel \
+      if ! sudo bpftool feature probe kernel \
           | grep -q "map_type ringbuf is available"; then
         echo "❌ BPF ring buffer NOT supported on this runner"
         exit 1
