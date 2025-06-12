@@ -91,28 +91,20 @@ runs:
 
       docker logs falco
   
-  - name: Check host eBPF & BTF support for Sysdig
+  - name: Check for BPF ring buffer support
     if: ${{ inputs.mode == 'analyze' }}
     shell: bash
     run: |
-      echo "🔍 Verifying host BPF ring buffer support"
-      # use bpftool inside a privileged Sysdig image to probe the host
       docker run --rm --privileged \
-        -v /sys/fs/bpf:/sys/fs/bpf \
-        -v /sys/kernel/btf:/sys/kernel/btf \
-        -v /lib/modules:/lib/modules \
-        sysdig/sysdig:latest \
-        bpftool feature probe bpf-ringbuf \
-        || { echo "❌ BPF ring buffer not supported on this runner"; exit 1; }
+        -v /sys/fs/bpf:/sys/fs/bpf:ro \
+        -v /sys/kernel/btf:/sys/kernel/btf:ro \
+        -v /lib/modules:/lib/modules:ro \
+        --entrypoint bpftool \
+        quay.io/libbpf/bpftool:latest \
+        feature probe bpf-ringbuf \
+        || { echo "❌ BPF ring buffer NOT supported on this runner"; exit 1; }
 
-      echo "🔍 Verifying host BTF availability"
-      if [[ ! -r /sys/kernel/btf/vmlinux ]]; then
-        echo "❌ BTF (vmlinux) not available on this runner"
-        exit 1
-      fi
-
-      echo "✅ Host supports modern eBPF probe requirements"
-
+      echo "✅ BPF ring buffer supported"
 
   - name: Start Sysdig capture
     if: ${{ inputs.mode == 'analyze' }}
