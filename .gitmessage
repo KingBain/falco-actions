@@ -1,9 +1,0 @@
-# .gitmessage
-# Use this template to structure your commit messages.
-# Lines beginning with ‘#’ are ignored.
-
-<type>(<scope>): <subject>
-
-<body>
-
-Footer: Signed-off-by: John Bain <john.bain@gmail.com>

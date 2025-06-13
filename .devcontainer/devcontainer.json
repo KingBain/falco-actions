@@ -6,6 +6,12 @@
 	"features": {
 		"ghcr.io/devcontainers-community/npm-features/prettier:1": {}
 	},
-
-	"postCreateCommand": "git config --local commit.template .gitmessage && sed -i \"s|\\$GIT_AUTHOR_NAME|$(git config user.name)|g; s|\\$GIT_AUTHOR_EMAIL|$(git config user.email)|g\" .gitmessage && echo '✅ Git commit template configured with your name and email!'"
+	"customizations": {
+		"vscode": {
+			"extensions": [],
+			"settings": {
+				"git.alwaysSignOff": true
+			}
+		}
+	}
 }
