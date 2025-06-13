@@ -1,0 +1,12 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+{
+	"name": "Ubuntu(DCO Enabled)",
+	"image": "mcr.microsoft.com/devcontainers/base:jammy",
+	"features": {
+		"ghcr.io/devcontainers-community/npm-features/prettier:1": {}
+	},
+
+	"postCreateCommand": "git config --local commit.template .gitmessage && echo 'Git commit template configured!'"
+}
+

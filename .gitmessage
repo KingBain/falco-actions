@@ -1,0 +1,9 @@
+# .gitmessage
+# Use this template to structure your commit messages.
+# Lines beginning with ‘#’ are ignored.
+
+<type>(<scope>): <subject>
+
+<body>
+
+Footer: Signed-off-by: $GIT_AUTHOR_NAME <$GIT_AUTHOR_EMAIL>
