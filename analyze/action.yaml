@@ -66,20 +66,30 @@ inputs:
     type: boolean
     required: false
     default: false
+  capture_name:
+    description: "Artifact name to use when uploading the capture file in analyze mode"
+    type: string
+    required: false
+    default: 'capture'
+  hashes_name:
+    description: "Artifact name to use when uploading the hashes file in analyze mode"
+    type: string
+    required: false
+    default: 'hashes'
 runs:
   using: 'composite'
   steps:
   - name: Download capture
     uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
     with:
-      name: capture
+      name: ${{ inputs.capture_name }}
       path: /tmp
 
   - name: Download hashes
     if: ${{ inputs.extract-hashes == 'true' }}
     uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
     with:
-      name: hashes
+      name: ${{ inputs.hashes_name }}
       path: /tmp
   
   - name: Start Falco in capture mode

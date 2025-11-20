@@ -14,6 +14,16 @@ inputs:
     description: "Enable verbose logs"
     type: boolean
     default: false
+  capture_name:
+    description: "Artifact name to use when uploading the capture file in analyze mode"
+    type: string
+    required: false
+    default: 'capture'
+  hashes_name:
+    description: "Artifact name to use when uploading the hashes file in analyze mode"
+    type: string
+    required: false
+    default: 'hashes'
 runs:
   using: 'composite'
   steps:
@@ -95,7 +105,7 @@ runs:
     if: ${{ inputs.mode == 'analyze' }}
     uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
     with:
-      name: capture
+      name: ${{ inputs.capture_name }}
       path: /tmp/capture.scap
 
   - name: Extract executables' hash
@@ -128,5 +138,5 @@ runs:
     if: ${{ inputs.mode == 'analyze' }}
     uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
     with:
-      name: hashes
+      name: ${{ inputs.hashes_name }}
       path: /tmp/hashes.txt
