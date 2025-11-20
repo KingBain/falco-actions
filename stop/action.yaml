@@ -93,7 +93,7 @@ runs:
   
   - name: Upload Capture for Analyze mode
     if: ${{ inputs.mode == 'analyze' }}
-    uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+    uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
     with:
       name: capture
       path: /tmp/capture.scap
@@ -126,7 +126,7 @@ runs:
 
   - name: Upload Hashes
     if: ${{ inputs.mode == 'analyze' }}
-    uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+    uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
     with:
       name: hashes
       path: /tmp/hashes.txt
